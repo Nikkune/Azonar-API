@@ -1,0 +1,10 @@
+# Project exclude paths
+/node_modules/
+/.idea/.gitignore
+/.idea/api_azonar.iml
+/.idea/deployment.xml
+/.idea/jsLibraryMappings.xml
+/.idea/modules.xml
+/.idea/sshConfigs.xml
+/.idea/vcs.xml
+/.idea/webServers.xml
