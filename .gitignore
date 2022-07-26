@@ -1,5 +1,6 @@
 # Project exclude paths
 /node_modules/
+/.idea/*
 /.idea/.gitignore
 /.idea/api_azonar.iml
 /.idea/deployment.xml
@@ -8,3 +9,4 @@
 /.idea/sshConfigs.xml
 /.idea/vcs.xml
 /.idea/webServers.xml
+/.idea/Azonar-API.iml

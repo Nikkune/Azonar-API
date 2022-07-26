@@ -61,6 +61,7 @@ router.put('/chapter/:id', (req, res) => {
 
     const updateRecord = {
         chapter_number: req.body.chapter_number,
+        site_id: req.body.site_id,
         site_link: req.body.site_link
     };
 
