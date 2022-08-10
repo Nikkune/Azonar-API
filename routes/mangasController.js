@@ -11,6 +11,18 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/:id', (req, res) => {
+    if (!ObjectId.isValid(req.params.id))
+        return res.status(400).send("ID unknown : " + req.params.id)
+
+    MangasModel.findById(
+        req.params.id,
+        (err, docs) => {
+        if (!err) res.send(docs);
+        else return res.status(500).send("Error getting data : " + err);
+    });
+});
+
 router.get('/genres', (req, res) => {
     MangasModel.find((err, docs) => {
         let genres = [];
