@@ -12,7 +12,7 @@ const MangasModel = mongoose.model(
             required: false
         },
         genres: {
-            type: String,
+            type: Array,
             required: false
         },
         type_id: {

@@ -8,13 +8,22 @@ const UsersModel = mongoose.model(
             unique: true,
             required: true
         },
+        email: {
+            type: String,
+            unique: true,
+            required: false
+        },
+        token: {
+            type: String,
+            required: false
+        },
         password: {
             type: String,
-            required: true
+            required: false
         },
         status: {
             type: Number,
-            required: true
+            required: false
         }
     },
     "users"

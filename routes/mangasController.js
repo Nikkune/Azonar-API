@@ -11,6 +11,21 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/genres', (req, res) => {
+    MangasModel.find((err, docs) => {
+        let genres = [];
+        for (const doc of docs) {
+            for (const genre of doc.genres) {
+                if (!genres.includes(genre))
+                    genres.push(genre);
+            }
+        }
+        genres.sort((a, b) => a.localeCompare(b));
+        if (!err) res.send(genres);
+        else return res.status(500).send("Error getting data : " + err);
+    });
+});
+
 router.post('/', (req, res) => {
     const newRecord = new MangasModel({
         name: req.body.name,

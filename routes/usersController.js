@@ -1,16 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const ObjectId = require('mongoose').Types.ObjectId;
+const environment = require('../environment');
 
 const {UsersModel} = require('../models/usersModel');
 
 router.get('/', (req, res) => {
     UsersModel.find((err, docs) => {
-        let id = [];
-        for (const doc of docs) {
-            id.push(doc._id);
-        }
-        if (!err) res.send(id);
+        if (!err) res.send(docs);
         else return res.status(500).send("Error getting data : " + err);
     });
 });
@@ -24,11 +21,22 @@ router.get('/:pseudonym', (req, res) => {
         });
 });
 
+router.get('/email/:email', (req, res) => {
+    UsersModel.findOne(
+        {email: req.params.email},
+        (err, docs) => {
+            if (!err) res.send(docs);
+            else return res.status(500).send("Error getting data : " + err);
+        });
+});
+
 router.post('/', (req, res) => {
     const newRecord = new UsersModel({
         pseudonym: req.body.pseudonym,
+        email: req.body.email,
+        token: environment.generateToken(),
         password: req.body.password,
-        status: req.body.status
+        status: 1
     });
 
     newRecord.save((err, docs) => {
@@ -43,6 +51,7 @@ router.put('/:id', (req, res) => {
 
     const updateRecord = {
         pseudonym: req.body.pseudonym,
+        email: req.body.email,
         password: req.body.password,
         status: req.body.status
     };
