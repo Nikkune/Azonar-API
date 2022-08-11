@@ -97,7 +97,7 @@ router.put('/status/:user_id', (req, res) => {
         return res.status(400).send("Manga ID unknown : " + req.body.manga_id)
 
     const updateRecord = {
-        status: req.body.status
+        status_id: req.body.status_id
     };
 
     MangasListsModel.findOneAndUpdate(
@@ -114,16 +114,18 @@ router.put('/status/:user_id', (req, res) => {
     )
 });
 
-router.delete('/:user_id', (req, res) => {
-    if (!ObjectId.isValid(req.params.user_id))
-        return res.status(400).send("User ID unknown : " + req.params.user_id)
-    if (!ObjectId.isValid(req.body.manga_id))
-        return res.status(400).send("Manga ID unknown : " + req.body.manga_id)
+router.delete('/:encoded', (req, res) => {
+    const user_id = req.params.encoded.split("!?!")[0]
+    const manga_id = req.params.encoded.split("!?!")[1]
+    if (!ObjectId.isValid(user_id))
+        return res.status(400).send("User ID unknown : " + user_id)
+    if (!ObjectId.isValid(manga_id))
+        return res.status(400).send("Manga ID unknown : " + manga_id)
 
     MangasListsModel.findOneAndDelete(
         {
-            user_id: req.params.user_id,
-            manga_id: req.body.manga_id
+            user_id: user_id,
+            manga_id: manga_id
         },
         (err, docs) => {
             if (!err) res.send(docs);
