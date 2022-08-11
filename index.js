@@ -14,7 +14,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors(environment.corsOptions));
 app.use('/mangas', mangasRoutes);
-app.use('/mangas/lists', mangasListsRoutes);
+app.use('/lists', mangasListsRoutes);
 app.use('/bots', botsRoutes);
 app.use('/users', usersRoutes);
 
