@@ -23,6 +23,24 @@ router.get('/:user_id', (req, res) => {
         });
 });
 
+router.get('/mangaID/:user_id', (req, res) => {
+    if (!ObjectId.isValid(req.params.user_id))
+        return res.status(400).send("User ID unknown : " + req.params.user_id);
+
+    MangasListsModel.find(
+        {user_id: req.params.user_id},
+        (err, docs) => {
+            if (!err) {
+                let data = [];
+                for (const doc of docs) {
+                    data.push(doc.manga_id)
+                }
+                res.send(data);
+            }
+            else return res.status(500).send("Error getting data : " + err);
+        });
+});
+
 router.post('/', (req, res) => {
     const newRecord = new MangasListsModel({
         user_id: req.body.user_id,
@@ -114,19 +132,12 @@ router.put('/status/:user_id', (req, res) => {
     )
 });
 
-router.delete('/:encoded', (req, res) => {
-    const user_id = req.params.encoded.split("!?!")[0]
-    const manga_id = req.params.encoded.split("!?!")[1]
-    if (!ObjectId.isValid(user_id))
+router.delete('/:id', (req, res) => {
+    if (!ObjectId.isValid(req.params.id))
         return res.status(400).send("User ID unknown : " + user_id)
-    if (!ObjectId.isValid(manga_id))
-        return res.status(400).send("Manga ID unknown : " + manga_id)
 
-    MangasListsModel.findOneAndDelete(
-        {
-            user_id: user_id,
-            manga_id: manga_id
-        },
+    MangasListsModel.findByIdAndDelete(
+        req.params.id,
         (err, docs) => {
             if (!err) res.send(docs);
             else return res.status(500).send("Delete error : " + err);

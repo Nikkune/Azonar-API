@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:id', (req, res) => {
+router.get('/viaID/:id', (req, res) => {
     if (!ObjectId.isValid(req.params.id))
         return res.status(400).send("ID unknown : " + req.params.id)
 
@@ -34,6 +34,13 @@ router.get('/genres', (req, res) => {
         }
         genres.sort((a, b) => a.localeCompare(b));
         if (!err) res.send(genres);
+        else return res.status(500).send("Error getting data : " + err);
+    });
+});
+
+router.get('/last', (req, res) => {
+    MangasModel.find((err, docs) => {
+        if (!err) res.send(docs.sort((a, b) => new Date(b.last_update) - new Date(a.last_update)).slice(0,6));
         else return res.status(500).send("Error getting data : " + err);
     });
 });
@@ -68,7 +75,8 @@ router.put('/:id', (req, res) => {
         chapter_number: req.body.chapter_number,
         site_id: req.body.site_id,
         site_link: req.body.site_link,
-        cover_link: req.body.cover_link
+        cover_link: req.body.cover_link,
+        last_update: new Date()
     };
 
     MangasModel.findByIdAndUpdate(
@@ -89,7 +97,8 @@ router.put('/chapter/:id', (req, res) => {
     const updateRecord = {
         chapter_number: req.body.chapter_number,
         site_id: req.body.site_id,
-        site_link: req.body.site_link
+        site_link: req.body.site_link,
+        last_update: new Date()
     };
 
     MangasModel.findByIdAndUpdate(
