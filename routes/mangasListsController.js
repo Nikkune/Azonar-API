@@ -67,7 +67,8 @@ router.put('/current/:user_id', (req, res) => {
     const updateRecord = {
         current_chapter_link: req.body.current_chapter_link,
         current_chapter: req.body.current_chapter,
-        is_read: req.body.is_read
+        is_read: req.body.is_read,
+        last_update: new Date()
     };
 
     MangasListsModel.findOneAndUpdate(
@@ -91,7 +92,8 @@ router.put('/read/:user_id', (req, res) => {
         return res.status(400).send("Manga ID unknown : " + req.body.manga_id)
 
     const updateRecord = {
-        is_read: req.body.is_read
+        is_read: req.body.is_read,
+        last_update: new Date()
     };
 
     MangasListsModel.findOneAndUpdate(
@@ -115,7 +117,8 @@ router.put('/status/:user_id', (req, res) => {
         return res.status(400).send("Manga ID unknown : " + req.body.manga_id)
 
     const updateRecord = {
-        status_id: req.body.status_id
+        status_id: req.body.status_id,
+        last_update: new Date()
     };
 
     MangasListsModel.findOneAndUpdate(
